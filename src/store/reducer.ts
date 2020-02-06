@@ -22,16 +22,18 @@ const reducer = (state = initialState, action) => {
           action.expression
         ]
       }
-      let visibleNumber = expression.join('').split(/[*+/-]/)
+      if (isInputOperator && isLastExpressionAnOperator) {
+        _state.expression[_state.expression.length - 1] = action.expression
+      }
 
-      console.log('expression', expression.length)
+      let visibleNumber = isInputOperator
+        ? [_state.visibleNumber]
+        : expression.join('').split(/[*+/-]/)
 
       _state = Object.assign(_state, {
         expression,
         isDoneCalculate: false,
-        visibleNumber: isInputOperator
-          ? _state.visibleNumber
-          : visibleNumber[visibleNumber.length - 1]
+        visibleNumber: visibleNumber.pop()
       })
       break
 
