@@ -12,12 +12,14 @@ const styles = StyleSheet.create({
     padding: 20
   },
   numberPadArea: {
+    paddingBottom: 5,
     flex: 1,
     flexGrow: 1,
     flexDirection: 'row'
   },
   numberPad: {
     flex: 3,
+    alignContent: 'stretch',
     flexWrap: 'wrap',
     flexDirection: 'row'
   },
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   buttonNumber: {
-    flexBasis: 'calc(100% / 3)'
+    flexBasis: '33.333%'
   },
   buttonLabel: {
     fontSize: 32
