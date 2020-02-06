@@ -11,12 +11,20 @@ const reducer = (state = initialState, action) => {
 
   switch (action.type) {
     case ADD_EXPRESSION:
-      let expression = [
-        ...(_state.isDoneCalculate ? [] : _state.expression),
-        action.expression
-      ]
       let isInputOperator = keypadOperators.includes(action.expression)
+      let isLastExpressionAnOperator = keypadOperators.includes(
+        _state.expression[_state.expression.length - 1]
+      )
+      let expression = _state.expression
+      if (!isInputOperator || !isLastExpressionAnOperator) {
+        expression = [
+          ...(_state.isDoneCalculate ? [] : _state.expression),
+          action.expression
+        ]
+      }
       let visibleNumber = expression.join('').split(/[*+/-]/)
+
+      console.log('expression', expression.length)
 
       _state = Object.assign(_state, {
         expression,
@@ -36,7 +44,7 @@ const reducer = (state = initialState, action) => {
       _state = Object.assign(_state, {
         expression: [calculation],
         isDoneCalculate: true,
-        visibleNumber: calculation
+        visibleNumber: Math.round(calculation * 100000) / 100000
       })
       break
 
