@@ -15,8 +15,6 @@ interface ButtonProps {
 }
 
 function Button(props: ButtonProps) {
-  console.log('Button rendered', props.label)
-
   return (
     <TouchableOpacity
       onPress={props.onPress}
