@@ -9,7 +9,7 @@ export const RESET_EXPRESSION = 'RESET_EXPRESSION'
  * redux initial state
  */
 export const initialState = {
-  expression: [],
+  expression: ['0'],
   visibleNumber: '0',
   isDoneCalculate: false,
   isInputOperator: false

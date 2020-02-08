@@ -18,30 +18,32 @@ export const resetExpression = () => ({
   type: RESET_EXPRESSION
 })
 
-export const setExpression = (
-  actionExpression,
-  defaultExpression,
-  isDoneCalculate
-) => {
-  let isInputOperator = keypadOperators.includes(actionExpression)
-  let isLastExpressionAnOperator = keypadOperators.includes(
-    defaultExpression[defaultExpression.length - 1]
+export const generateExpression = (allExpression, actionExpression) => {
+  let expression = allExpression
+  let inputExpression = actionExpression
+  let isNextActionAnOperator = keypadOperators.includes(inputExpression)
+  let isPrevExpressionAnOperator = keypadOperators.includes(
+    expression[expression.length - 1]
   )
-  let expression = defaultExpression
-  if (!isInputOperator || !isLastExpressionAnOperator) {
+
+  if (!isPrevExpressionAnOperator && !isNextActionAnOperator) {
     expression = [
-      ...(isDoneCalculate ? [] : defaultExpression),
-      actionExpression
+      ...(expression.length == 1 && expression[expression.length - 1] == '0'
+        ? []
+        : expression),
+      inputExpression
     ]
+  } else if (isPrevExpressionAnOperator && isNextActionAnOperator) {
+    // Replace the last math operator with new math operator
+    expression[expression.length - 1] = inputExpression
+  } else {
+    expression = [...expression, inputExpression]
   }
 
-  if (isInputOperator && isLastExpressionAnOperator) {
-    defaultExpression[defaultExpression.length - 1] = actionExpression
-  }
-
-  let visibleNumber = isInputOperator
-    ? [defaultExpression]
-    : expression.join('').split(/[*+/-]/)
+  let getVisibleNumber = expression.join('').split(/[*+/-]/)
+  let visibleNumber = isNextActionAnOperator
+    ? [getVisibleNumber[getVisibleNumber.length - 2]]
+    : getVisibleNumber
 
   return {
     expression,

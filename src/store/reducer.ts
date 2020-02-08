@@ -1,39 +1,25 @@
 import {
-  keypadOperators,
   initialState,
   ADD_EXPRESSION,
   CALCULATE_EXPRESSION,
-  RESET_EXPRESSION
+  RESET_EXPRESSION,
+  keypadOperators
 } from '../constant'
+import { generateExpression } from './action'
 
 const reducer = (state = initialState, action) => {
   let _state = { ...state }
 
   switch (action.type) {
     case ADD_EXPRESSION:
-      let isInputOperator = keypadOperators.includes(action.expression)
-      let isLastExpressionAnOperator = keypadOperators.includes(
-        _state.expression[_state.expression.length - 1]
+      const { expression, visibleNumber } = generateExpression(
+        _state.expression,
+        action.expression
       )
-      let expression = _state.expression
-      if (!isInputOperator || !isLastExpressionAnOperator) {
-        expression = [
-          ...(_state.isDoneCalculate ? [] : _state.expression),
-          action.expression
-        ]
-      }
-      if (isInputOperator && isLastExpressionAnOperator) {
-        _state.expression[_state.expression.length - 1] = action.expression
-      }
-
-      let visibleNumber = isInputOperator
-        ? [_state.visibleNumber]
-        : expression.join('').split(/[*+/-]/)
 
       _state = Object.assign(_state, {
         expression,
-        isDoneCalculate: false,
-        visibleNumber: visibleNumber.pop()
+        visibleNumber
       })
       break
 
@@ -42,7 +28,15 @@ const reducer = (state = initialState, action) => {
       break
 
     case CALCULATE_EXPRESSION:
-      let calculation = eval(_state.expression.join(''))
+      let _expression = _state.expression
+      let lastExpression = _expression[_expression.length - 1]
+
+      if (keypadOperators.includes(lastExpression)) {
+        _expression.pop()
+      }
+
+      let calculation = eval(_expression.join(''))
+      console.log(calculation)
       _state = Object.assign(_state, {
         expression: [calculation],
         isDoneCalculate: true,
