@@ -31,6 +31,9 @@ function Screen(props: any) {
     <View style={styles.container}>
       <View style={styles.resultArea}>
         <Text style={styles.resultLabel}>{props.visibleNumber}</Text>
+        <View>
+          <Text>{props.expression.join('')}</Text>
+        </View>
       </View>
       <View style={styles.numberPadArea}>
         <View style={styles.numberPad}>

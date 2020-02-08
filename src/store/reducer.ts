@@ -36,7 +36,6 @@ const reducer = (state = initialState, action) => {
       }
 
       let calculation = eval(_expression.join(''))
-      console.log(calculation)
       _state = Object.assign(_state, {
         expression: [calculation],
         isDoneCalculate: true,
